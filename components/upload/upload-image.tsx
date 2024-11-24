@@ -1,37 +1,38 @@
-"use client"
+"use client";
 
-import { uploadImage } from "@/server/upload-image"
-import { useImageStore } from "@/lib/store"
-import { useDropzone } from "react-dropzone"
-import Lottie from "lottie-react"
-import { Card, CardContent } from "../ui/card"
-import { cn } from "@/lib/utils"
-import { useLayerStore } from "@/lib/layer-store"
-import imageAnimation from "@/public/animations/image-upload.json"
-import { toast } from "sonner"
+import { uploadImage } from "@/server/upload-image";
+import { useImageStore } from "@/lib/store";
+import { useDropzone } from "react-dropzone";
+import Lottie from "lottie-react";
+import { Card, CardContent } from "../ui/card";
+import { cn } from "@/lib/utils";
+import { useLayerStore } from "@/lib/layer-store";
+import imageAnimation from "@/public/animations/image-upload.json";
+import { toast } from "sonner";
 
 export default function UploadImage() {
-  const setTags = useImageStore((state) => state.setTags)
-  const setGenerating = useImageStore((state) => state.setGenerating)
-  const activeLayer = useLayerStore((state) => state.activeLayer)
-  const updateLayer = useLayerStore((state) => state.updateLayer)
-  const setActiveLayer = useLayerStore((state) => state.setActiveLayer)
+  const setTags = useImageStore((state) => state.setTags);
+  const setGenerating = useImageStore((state) => state.setGenerating);
+  const activeLayer = useLayerStore((state) => state.activeLayer);
+  const updateLayer = useLayerStore((state) => state.updateLayer);
+  const setActiveLayer = useLayerStore((state) => state.setActiveLayer);
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     maxFiles: 1,
     accept: {
       "image/png": [".png"],
-      "image/jpg": [".jpg"],
+      "image/jpeg": [".jpeg", ".jpg"],
       "image/webp": [".webp"],
-      "image/jpeg": ["jpeg"],
     },
+
     onDrop: async (acceptedFiles, fileRejections) => {
       if (acceptedFiles.length) {
-        const formData = new FormData()
-        formData.append("image", acceptedFiles[0])
+        const formData = new FormData();
+        formData.append("image", acceptedFiles[0]);
+        formData.append("upload_preset", "my_upload_preset"); // Add upload preset here
         //Generate Object url
-        const objectUrl = URL.createObjectURL(acceptedFiles[0])
-        setGenerating(true)
+        const objectUrl = URL.createObjectURL(acceptedFiles[0]);
+        setGenerating(true);
 
         updateLayer({
           id: activeLayer.id,
@@ -42,9 +43,9 @@ export default function UploadImage() {
           publicId: "",
           format: "",
           resourceType: "image",
-        })
-        setActiveLayer(activeLayer.id)
-        const res = await uploadImage({ image: formData })
+        });
+        setActiveLayer(activeLayer.id);
+        const res = await uploadImage({ image: formData });
 
         if (res?.data?.success) {
           updateLayer({
@@ -56,24 +57,24 @@ export default function UploadImage() {
             publicId: res.data.success.public_id,
             format: res.data.success.format,
             resourceType: res.data.success.resource_type,
-          })
-          setTags(res.data.success.tags)
+          });
+          setTags(res.data.success.tags);
 
-          setActiveLayer(activeLayer.id)
-          console.log(activeLayer)
-          setGenerating(false)
+          setActiveLayer(activeLayer.id);
+          console.log(activeLayer);
+          setGenerating(false);
         }
         if (res?.data?.error) {
-          setGenerating(false)
+          setGenerating(false);
         }
       }
 
       if (fileRejections.length) {
-        console.log("rejected")
-        toast.error(fileRejections[0].errors[0].message)
+        console.log("rejected");
+        toast.error(fileRejections[0].errors[0].message);
       }
     },
-  })
+  });
 
   if (!activeLayer.url)
     return (
@@ -99,5 +100,5 @@ export default function UploadImage() {
           </div>
         </CardContent>
       </Card>
-    )
+    );
 }

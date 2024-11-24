@@ -5,7 +5,7 @@ import { actionClient } from "@/server/safe-action"
 import z from "zod"
 
 cloudinary.config({
-  cloud_name: "restyled",
+  cloud_name: "diuv9pvep",
   api_key: process.env.CLOUDINARY_KEY,
   api_secret: process.env.CLOUDINARY_SECRET,
 })
@@ -36,15 +36,15 @@ export const uploadImage = actionClient
       return new Promise<UploadResult>((resolve, reject) => {
         const uploadStream = cloudinary.uploader.upload_stream(
           {
-            upload_preset: "restyled",
+            upload_preset: "my_upload_preset",
             use_filename: true,
             unique_filename: false,
             filename_override: file.name,
           },
           (error, result) => {
             if (error || !result) {
-              console.error("Upload failed:", error)
-              reject({ error: "Upload failed" })
+              console.error("Upload FFailed:", error)
+              reject({ error: "Upload FFailed" })
             } else {
               console.log("Upload successful:", result)
               resolve({ success: result })
