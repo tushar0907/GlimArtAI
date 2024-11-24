@@ -20,7 +20,7 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card"
-import Tiktok from "../icons/tiktok"
+import Reel from "../icons/reel"
 import Image from "next/image"
 import Youtube from "../icons/youtube"
 import { cn } from "@/lib/utils"
@@ -113,13 +113,13 @@ export default function SmartCrop() {
               onClick={() => setAspectRatio("9:16")}
             >
               <CardHeader className="p-0 text-center">
-                <CardTitle className="text-md ">Tiktok</CardTitle>
+                <CardTitle className="text-md ">Reel</CardTitle>
                 <CardDescription>
                   <p className="text-sm font-bold ">9:16</p>
                 </CardDescription>
               </CardHeader>
               <CardContent className="flex items-center justify-center p-0 pt-2">
-                <Tiktok />
+                <Reel />
               </CardContent>
             </Card>
             <Card
