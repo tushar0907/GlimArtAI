@@ -33,6 +33,10 @@ type State = {
   setActiveColor: (color: string) => void
   generating: boolean
   setGenerating: (generating: boolean) => void
+  imageHeight: number 
+  setImageHeight: (height: number) => void 
+  imageWidth: number 
+  setImageWidth: (width: number) => void 
 }
 
 const getStore = (initialState: {
@@ -51,6 +55,10 @@ const getStore = (initialState: {
         setActiveColor: (color) => set({ activeColor: color }),
         generating: false,
         setGenerating: (generating) => set({ generating }),
+        imageHeight: 0, 
+        setImageHeight: (height) => set({ imageHeight: height }), 
+        imageWidth: 0, 
+        setImageWidth: (width) => set({ imageWidth: width }), 
       }),
       {
         name: "image-storage",
